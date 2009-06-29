@@ -1,0 +1,11 @@
+Changes
+COPYING
+lib/Unicode/Emoji/Base.pm
+lib/Unicode/Emoji/DoCoMo.pm
+lib/Unicode/Emoji/E4U.pm
+lib/Unicode/Emoji/Google.pm
+lib/Unicode/Emoji/KDDI.pm
+lib/Unicode/Emoji/SoftBank.pm
+Makefile.PL
+META.yml
+t/00-load.t

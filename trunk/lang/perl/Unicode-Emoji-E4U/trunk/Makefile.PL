@@ -10,6 +10,7 @@ my $opt = {
         'Test::More'        =>  '0',
         'Test::Harness'     =>  '3.04',
         'Encode'            =>  '0',
+        'Any::Moose'        =>  '0',
     },
 };
 
