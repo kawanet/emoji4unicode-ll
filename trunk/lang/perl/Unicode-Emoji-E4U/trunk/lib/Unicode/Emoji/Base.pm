@@ -1,14 +1,15 @@
 package Unicode::Emoji::Base;
 use XML::TreePP;
 use Any::Moose;
+has verbose     => (is => 'rw', isa => 'Bool');
 has datadir     => (is => 'rw', isa => 'Str', lazy_build => 1);
 has treepp_opt  => (is => 'rw', isa => 'Ref', lazy_build => 1);
 has treepp      => (is => 'rw', isa => 'XML::TreePP', lazy_build => 1);
 
 our $VERSION = '0.01';
 
-our $DATADIR = 'data/';
-# our $DATADIR = 'http://emoji4unicode.googlecode.com/svn/trunk/data/';
+# our $DATADIR = 'data/';
+our $DATADIR = 'http://emoji4unicode.googlecode.com/svn/trunk/data/';
 
 our $TREEPP_OPT = {
     force_array =>  [qw(category subcategory e ann)],
@@ -41,16 +42,25 @@ sub _build_root {
 
     # data/docomo/carrier_data.xml or
     # http://emoji4unicode.googlecode.com/svn/trunk/data/docomo/carrier_data.xml
-    my $datafile = $self->datadir . $self->xmlfile;
+    my $datadir  = $self->datadir;
+    $datadir =~ s#/?$#/#;
+    my $datafile = $datadir . $self->xmlfile;
 
     # element class name
     my $elem_class = (ref $self).'::XML';
     my $save = $self->treepp->get('elem_class');
     $self->treepp->set(elem_class => $elem_class);
 
+    # verbose message
+    print STDERR $datafile, "\n" if $self->verbose;
+
     # fetch and parse
-    my $method = ($datafile =~ m#^https?://#) ? 'parsehttp' : 'parsefile';
-    my $data = $self->treepp->$method($datafile);
+    my $data;
+    if ($datafile =~ m#^https?://#) {
+        $data = $self->treepp->parsehttp(GET => $datafile);
+    } else {
+        $data = $self->treepp->parsefile($datafile);
+    }
 
     # restore
     $self->treepp->set(elem_class => $save);
