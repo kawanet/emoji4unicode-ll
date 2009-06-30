@@ -6,7 +6,7 @@ Unicode::Emoji::KDDI - Emoji for au by KDDI
 
 will be described later.
 
-=head1 FUNCTIONS
+=head1 METHODS
 
 will be described later.
 

@@ -6,7 +6,7 @@ Unicode::Emoji::E4U - Emoji mappings based on emoji4unicode project
 
 will be described later.
 
-=head1 FUNCTIONS
+=head1 METHODS
 
 will be described later.
 
