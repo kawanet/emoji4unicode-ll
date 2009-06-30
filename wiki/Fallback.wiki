@@ -1,5 +1,6 @@
+#summary fallback 関数
 #labels Japanese
-# fallback 関数
+
 == fallback 関数 ==
 
 x-utf8-e4u-none を使った場合は全ての絵文字で、また、使わない場合でも、
