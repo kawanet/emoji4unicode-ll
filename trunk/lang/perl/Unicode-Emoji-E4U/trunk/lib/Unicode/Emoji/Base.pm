@@ -1,3 +1,61 @@
+=head1 NAME
+
+Unicode::Emoji::Base - Base class for Unicode::Emoji::* classes
+
+=head1 DESCRIPTION
+
+This is a base class for Unicode::Emoji::* classes.
+
+=head1 BASE CLASSES
+
+This provides base classes as following:
+
+=head2 Unicode::Emoji::Base
+
+Base class for
+L<Unicode::Emoji::E4U> and
+C<Unicode::Emoji::File> classes.
+
+=head2 Unicode::Emoji::Base::File
+
+Base class for
+L<Unicode::Emoji::Google> and
+C<Unicode::Emoji::Carrier> classes.
+
+=head2 Unicode::Emoji::Base::Carrier
+
+Base class for
+L<Unicode::Emoji::DoCoMo>,
+L<Unicode::Emoji::KDDI> and
+L<Unicode::Emoji::SoftBank> classes.
+
+=head2 Unicode::Emoji::Base::Char;
+
+Base class for
+C<Unicode::Emoji::Google::Emoji> and
+C<Unicode::Emoji::Base::Char::CP932> classes.
+
+=head2 Unicode::Emoji::Base::Char::CP932;
+
+Base class for
+C<Unicode::Emoji::DoCoMo::Emoji>,
+C<Unicode::Emoji::KDDI::Emoji> and
+C<Unicode::Emoji::SoftBank::Emoji> classes.
+
+=head1 AUTHOR
+
+Yusuke Kawasaki, L<http://www.kawa.net/>
+
+=head1 SEE ALSO
+
+L<Unicode::Emoji::E4U>
+
+=head1 COPYRIGHT
+
+Copyright 2009 Yusuke Kawasaki, all rights reserved.
+
+=cut
+
 package Unicode::Emoji::Base;
 use XML::TreePP;
 use Any::Moose;

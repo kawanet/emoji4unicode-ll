@@ -1,3 +1,59 @@
+=head1 NAME
+
+Unicode::Emoji::E4U - Emoji mappings based on emoji4unicode project
+
+=head1 SYNOPSIS
+
+will be described later.
+
+=head1 FUNCTIONS
+
+will be described later.
+
+=head1 LINKS
+
+=over 4
+
+=item * Subversion Trunk
+
+L<http://emoji4unicode-ll.googlecode.com/svn/trunk/lang/perl/Unicode-Emoji-E4U/trunk/>
+
+=item * Project Hosting on Google Code
+
+L<http://code.google.com/p/emoji4unicode-ll/>
+
+=item * Google Groups
+
+L<http://groups.google.com/group/emoji4unicode-ll>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Unicode-Emoji-E4U>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/Unicode-Emoji-E4U>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/Unicode-Emoji-E4U/>
+
+=back
+
+=head1 AUTHOR
+
+Yusuke Kawasaki, L<http://www.kawa.net/>
+
+=head1 SEE ALSO
+
+L<Encode::JP::Emoji>
+
+=head1 COPYRIGHT
+
+Copyright 2009 Yusuke Kawasaki, all rights reserved.
+
+=cut
+
 package Unicode::Emoji::E4U;
 use Unicode::Emoji::Google;
 use Unicode::Emoji::DoCoMo;
