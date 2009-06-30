@@ -1,3 +1,33 @@
+=head1 NAME
+
+Unicode::Emoji::DoCoMo - Emoji for NTT DoCoMo
+
+=head1 SYNOPSIS
+
+will be described later.
+
+=head1 FUNCTIONS
+
+will be described later.
+
+=head1 DEFINITION
+
+L<http://emoji4unicode.googlecode.com/svn/trunk/data/docomo/carrier_data.xml>
+
+=head1 AUTHOR
+
+Yusuke Kawasaki, L<http://www.kawa.net/>
+
+=head1 SEE ALSO
+
+L<Unicode::Emoji::E4U>
+
+=head1 COPYRIGHT
+
+Copyright 2009 Yusuke Kawasaki, all rights reserved.
+
+=cut
+
 package Unicode::Emoji::DoCoMo;
 use Unicode::Emoji::Base;
 use Any::Moose;

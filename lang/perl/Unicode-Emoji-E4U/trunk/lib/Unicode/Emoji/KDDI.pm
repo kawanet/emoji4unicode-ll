@@ -1,3 +1,33 @@
+=head1 NAME
+
+Unicode::Emoji::KDDI - Emoji for au by KDDI
+
+=head1 SYNOPSIS
+
+will be described later.
+
+=head1 FUNCTIONS
+
+will be described later.
+
+=head1 DEFINITION
+
+L<http://emoji4unicode.googlecode.com/svn/trunk/data/kddi/carrier_data.xml>
+
+=head1 AUTHOR
+
+Yusuke Kawasaki, L<http://www.kawa.net/>
+
+=head1 SEE ALSO
+
+L<Unicode::Emoji::E4U>
+
+=head1 COPYRIGHT
+
+Copyright 2009 Yusuke Kawasaki, all rights reserved.
+
+=cut
+
 package Unicode::Emoji::KDDI;
 use Unicode::Emoji::Base;
 use Any::Moose;
