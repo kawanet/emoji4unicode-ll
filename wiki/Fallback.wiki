@@ -1,0 +1,38 @@
+#labels Japanese
+== fallback 関数 ==
+
+x-utf8-e4u-none を使った場合は全ての絵文字で、また、使わない場合でも、
+そのエンコーディングが対応しない絵文字コードが存在した場合の対処を、
+from_to の第4引数または encode・decode の第3引数で指定できます。
+{{{
+use Encode::JP::Emoji;
+use Encode::JP::Emoji::Fallback;
+}}}
+Encode::JP::Emoji::Fallback モジュールを読み込むと、下記のように FB_＊＊ 関数が利用できます。
+{{{
+my $sun = "\xF8\x9F";
+Encode::from_to($sun, 'x-sjis-emoji-docomo', 'x-sjis-e4u-none', FB_DOCOMO_TEXT());
+}}}
+DoCoMo の Shift_JIS 絵文字（SJIS+F89F）を DoCoMo 定義の絵文字名「晴れ」に変換します。
+{{{
+my $fog = "\xEE\x96\x98";
+Encode::from_to($fog, 'x-utf8-e4u-kddi', 'x-utf8-e4u-none', FB_GOOGLE_TEXT());
+}}}
+KDDI の UTF-8 絵文字（U+E598）を Google 定義の絵文字名「霧」に変換します。
+{{{
+my $hamster = "\x{E524}";
+my $softbank = Encode::encode('x-sjis-e4u-none', $hamster, FB_SOFTBANK_TEXT());
+}}}
+SoftBank の UTF-8 絵文字（U+E524）を SoftBank 定義の絵文字名「ハムスター」に変換します。
+{{{
+my $bear = "\xF3\xBE\x87\x81";
+my $google = Encode::decode('x-utf8-e4u-none', $bear, FB_GOOGLE_TEXT());
+}}}
+Google の UTF-8 絵文字（U+FE1C1）を Google 定義の絵文字名「クマ」に変換します。
+
+その他の fallback 関数については、Encode::JP::Emoji::Fallback のドキュメントを参照して下さい。
+なお、独自に fallback 関数を定義する場合は、返り値は UTF-8 フラグ ON で返して下さい。
+
+== SEE ALSO ==
+
+http://search.cpan.org/dist/Encode-JP-Emoji/lib/Encode/JP/Emoji/Fallback.pm
