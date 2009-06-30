@@ -1,4 +1,6 @@
+#summary 主な使い方
 #labels Japanese
+
 == 主な使い方 ==
 
 Encode::JP::Emoji モジュールの簡単な使い方を紹介します。
