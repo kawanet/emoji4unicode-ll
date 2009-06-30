@@ -6,7 +6,7 @@ Unicode::Emoji::SoftBank - Emoji for SoftBank Mobile
 
 will be described later.
 
-=head1 FUNCTIONS
+=head1 METHODS
 
 will be described later.
 

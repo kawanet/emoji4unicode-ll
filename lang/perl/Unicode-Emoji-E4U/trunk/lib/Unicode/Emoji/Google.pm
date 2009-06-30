@@ -6,7 +6,7 @@ Unicode::Emoji::Google - Emoji for Google and cross-mapping table
 
 will be described later.
 
-=head1 FUNCTIONS
+=head1 METHODS
 
 will be described later.
 
