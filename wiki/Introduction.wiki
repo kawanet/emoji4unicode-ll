@@ -1,4 +1,6 @@
+#summary Encode::JP::Emoji モジュールの概要
 #labels Japanese
+
 == 概要 ==
 
 emoji4unicode（Emoji for Unicode）プロジェクトでは、Google が中心となって
