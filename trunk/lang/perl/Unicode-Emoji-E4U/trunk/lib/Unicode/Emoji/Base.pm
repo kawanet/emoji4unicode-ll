@@ -5,42 +5,7 @@ Unicode::Emoji::Base - Base class for Unicode::Emoji::* classes
 =head1 DESCRIPTION
 
 This is a base class for Unicode::Emoji::* classes.
-
-=head1 BASE CLASSES
-
-This provides base classes as following:
-
-=head2 Unicode::Emoji::Base
-
-Base class for
-L<Unicode::Emoji::E4U> and
-C<Unicode::Emoji::File> classes.
-
-=head2 Unicode::Emoji::Base::File
-
-Base class for
-L<Unicode::Emoji::Google> and
-C<Unicode::Emoji::Carrier> classes.
-
-=head2 Unicode::Emoji::Base::Carrier
-
-Base class for
-L<Unicode::Emoji::DoCoMo>,
-L<Unicode::Emoji::KDDI> and
-L<Unicode::Emoji::SoftBank> classes.
-
-=head2 Unicode::Emoji::Base::Char;
-
-Base class for
-C<Unicode::Emoji::Google::Emoji> and
-C<Unicode::Emoji::Base::Char::CP932> classes.
-
-=head2 Unicode::Emoji::Base::Char::CP932;
-
-Base class for
-C<Unicode::Emoji::DoCoMo::Emoji>,
-C<Unicode::Emoji::KDDI::Emoji> and
-C<Unicode::Emoji::SoftBank::Emoji> classes.
+You B<DO NOT> need to use this directly.
 
 =head1 AUTHOR
 
@@ -59,15 +24,18 @@ Copyright 2009 Yusuke Kawasaki, all rights reserved.
 package Unicode::Emoji::Base;
 use XML::TreePP;
 use Any::Moose;
-has verbose     => (is => 'rw', isa => 'Bool');
-has datadir     => (is => 'rw', isa => 'Str', lazy_build => 1);
-has treepp_opt  => (is => 'rw', isa => 'Ref', lazy_build => 1);
-has treepp      => (is => 'rw', isa => 'XML::TreePP', lazy_build => 1);
+has verbose => (is => 'rw', isa => 'Bool');
+has datadir => (is => 'rw', isa => 'Str', lazy_build => 1);
+has treepp  => (is => 'rw', isa => 'XML::TreePP', lazy_build => 1);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
-# our $DATADIR = 'data/';
 our $DATADIR = 'http://emoji4unicode.googlecode.com/svn/trunk/data/';
+# our $DATADIR = 'data/';
+
+sub _build_datadir {
+    $DATADIR;
+}
 
 our $TREEPP_OPT = {
     force_array =>  [qw(category subcategory e ann)],
@@ -75,34 +43,37 @@ our $TREEPP_OPT = {
     utf8_flag   =>  1,
 };
 
-sub _build_datadir {
-    $DATADIR;
-}
-
-sub _build_treepp_opt {
-    my %copy = %$TREEPP_OPT;
-    \%copy;
-}
-
 sub _build_treepp {
     my $self = shift;
-    my $opt  = $self->treepp_opt;
-    XML::TreePP->new(%$opt);
+    XML::TreePP->new(%$TREEPP_OPT);
+}
+
+our $CONFIG_COLUMNS = [qw(verbose datadir treepp)];
+
+sub clone_config {
+    my $self = shift;
+    map { $_ => $self->{$_} } grep { exists $self->{$_} } @$CONFIG_COLUMNS;
 }
 
 package Unicode::Emoji::Base::File;
 use Any::Moose;
 extends 'Unicode::Emoji::Base';
-has root => (is => 'rw', isa => 'Ref', lazy_build => 1);
+has dataxml => (is => 'rw', isa => 'Str', lazy_build => 1);
+has root    => (is => 'rw', isa => 'Ref', lazy_build => 1);
+
+sub _build_dataxml {
+    my $self = shift;
+    my $datadir = $self->datadir;
+    $datadir =~ s#/?$#/#;
+    $datadir.$self->_dataxml;
+}
 
 sub _build_root {
     my $self = shift;
 
     # data/docomo/carrier_data.xml or
     # http://emoji4unicode.googlecode.com/svn/trunk/data/docomo/carrier_data.xml
-    my $datadir  = $self->datadir;
-    $datadir =~ s#/?$#/#;
-    my $datafile = $datadir . $self->xmlfile;
+    my $dataxml = $self->dataxml;
 
     # element class name
     my $elem_class = (ref $self).'::XML';
@@ -110,14 +81,14 @@ sub _build_root {
     $self->treepp->set(elem_class => $elem_class);
 
     # verbose message
-    print STDERR $datafile, "\n" if $self->verbose;
+    print STDERR $dataxml, "\n" if $self->verbose;
 
     # fetch and parse
     my $data;
-    if ($datafile =~ m#^https?://#) {
-        $data = $self->treepp->parsehttp(GET => $datafile);
+    if ($dataxml =~ m#^https?://#) {
+        $data = $self->treepp->parsehttp(GET => $dataxml);
     } else {
-        $data = $self->treepp->parsefile($datafile);
+        $data = $self->treepp->parsefile($dataxml);
     }
 
     # restore
@@ -157,7 +128,7 @@ sub find {
     $index->{$val};
 }
 
-package Unicode::Emoji::Base::Carrier;
+package Unicode::Emoji::Base::File::Carrier;
 use Any::Moose;
 extends 'Unicode::Emoji::Base::File';
 has list => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
@@ -168,7 +139,7 @@ sub _build_list {
     $list;
 }
 
-package Unicode::Emoji::Base::Char;
+package Unicode::Emoji::Base::Emoji;
 use Encode ();
 use Any::Moose;
 has unicode_hex => (is => 'rw', isa => 'Str', required => 1);
@@ -195,10 +166,10 @@ sub _build_is_alt {
     $self->unicode_hex =~ /^>/;
 }
 
-package Unicode::Emoji::Base::Char::CP932;
+package Unicode::Emoji::Base::Emoji::CP932;
 use Encode ();
 use Any::Moose;
-extends 'Unicode::Emoji::Base::Char';
+extends 'Unicode::Emoji::Base::Emoji';
 has cp932_string => (is => 'ro', isa => 'Str', lazy_build => 1);
 has cp932_octets => (is => 'ro', isa => 'Str', lazy_build => 1);
 

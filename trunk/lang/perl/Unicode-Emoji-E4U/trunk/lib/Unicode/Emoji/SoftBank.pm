@@ -4,11 +4,23 @@ Unicode::Emoji::SoftBank - Emoji for SoftBank Mobile
 
 =head1 SYNOPSIS
 
-will be described later.
+    use Unicode::Emoji::E4U;
+    my $e4u = Unicode::Emoji::E4U->new;
+    my $softbank = $e4u->softbank;
 
-=head1 METHODS
+    my $e;
+    $e = $softbank->list->[0];
+    $e = $softbank->find(unicode => 'E04A');
+    print "name_ja: ", $e->name_ja, "\n";
+    print "number: ",  $e->number, "\n";
+    print "unicode: ", $e->unicode, "\n";
 
-will be described later.
+    my $se = $e->softbank_emoji;
+    print "is_alt: ",         $se->is_alt, "\n";
+    print "unicode_string: ", $se->unicode_string, "\n";
+    print "unicode_octets: ", $se->unicode_octets, "\n";
+    print "cp932_string: ",   $se->cp932_string, "\n";
+    print "cp932_octets: ",   $se->cp932_octets, "\n";
 
 =head1 DEFINITION
 
@@ -31,11 +43,12 @@ Copyright 2009 Yusuke Kawasaki, all rights reserved.
 package Unicode::Emoji::SoftBank;
 use Unicode::Emoji::Base;
 use Any::Moose;
-extends 'Unicode::Emoji::Base::Carrier';
+extends 'Unicode::Emoji::Base::File::Carrier';
+has dataxml => (is => 'rw', isa => 'Str', lazy_build => 1);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
-sub xmlfile { 'softbank/carrier_data.xml'; }
+sub _dataxml { 'softbank/carrier_data.xml'; }
 
 package Unicode::Emoji::SoftBank::XML::carrier_data;
 use Any::Moose;
@@ -46,13 +59,13 @@ use Any::Moose;
 has name_ja   => (is => 'ro', isa => 'Str');
 has number    => (is => 'ro', isa => 'Str');
 has unicode   => (is => 'ro', isa => 'Str');
-has softbank_emoji => (is => 'ro', isa => 'Unicode::Emoji::Base::Char', lazy_build => 1);
+has softbank_emoji => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
 
 sub _build_softbank_emoji  { Unicode::Emoji::SoftBank::Emoji->new(unicode_hex => $_[0]->unicode) };
 
 package Unicode::Emoji::SoftBank::Emoji;
 use Any::Moose;
-extends 'Unicode::Emoji::Base::Char::CP932';
+extends 'Unicode::Emoji::Base::Emoji::CP932';
 
 sub _unicode_to_cp932 {
     my $self = shift;
