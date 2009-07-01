@@ -4,11 +4,28 @@ Unicode::Emoji::Google - Emoji for Google and cross-mapping table
 
 =head1 SYNOPSIS
 
-will be described later.
+    use Unicode::Emoji::E4U;
+    my $e4u = Unicode::Emoji::E4U->new;
+    my $google = $e4u->google;
 
-=head1 METHODS
+    my $e;
+    $e = $google->list->[0];
+    $e = $google->find(unicode => 'E04A');
+    print "id: ",            $e->id, "\n";
+    print "name: ",          $e->name, "\n";
+    print "desc: ",          $e->desc, "\n";
+    print "text_fallback: ", $e->text_fallback, "\n";
+    print "in_proposal: ",   $e->in_proposal, "\n";
 
-will be described later.
+    my $de = $e->docomo_emoji;      # Unicode::Emoji::DoCoMo::Emoji
+    my $ke = $e->kddi_emoji;        # Unicode::Emoji::KDDI::Emoji
+    my $se = $e->softbank_emoji;    # Unicode::Emoji::SoftBank::Emoji
+    my $ge = $e->google_emoji;      # Unicode::Emoji::Google::Emoji
+    my $ue = $e->unicode_emoji;     # Unicode::Emoji::Unicode::Emoji
+
+    print "is_alt: ",         $ge->is_alt, "\n";
+    print "unicode_string: ", $ge->unicode_string, "\n";
+    print "unicode_octets: ", $ge->unicode_octets, "\n";
 
 =head1 DEFINITION
 
@@ -22,6 +39,12 @@ Yusuke Kawasaki, L<http://www.kawa.net/>
 
 L<Unicode::Emoji::E4U>
 
+L<Unicode::Emoji::DoCoMo>
+
+L<Unicode::Emoji::KDDI>
+
+L<Unicode::Emoji::SoftBank>
+
 =head1 COPYRIGHT
 
 Copyright 2009 Yusuke Kawasaki, all rights reserved.
@@ -33,10 +56,11 @@ use Unicode::Emoji::Base;
 use Any::Moose;
 extends 'Unicode::Emoji::Base::File';
 has list => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
+has dataxml => (is => 'rw', isa => 'Str', lazy_build => 1);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
-sub xmlfile { 'emoji4unicode.xml'; }
+sub _dataxml { 'emoji4unicode.xml'; }
 
 sub _build_list {
     my $self = shift;
@@ -79,11 +103,11 @@ has in_proposal     => (is => 'ro', isa => 'Str');
 has text_repr       => (is => 'ro', isa => 'Str');
 has prop            => (is => 'ro', isa => 'Str');
 
-has docomo_emoji   => (is => 'ro', isa => 'Unicode::Emoji::Base::Char', lazy_build => 1);
-has kddi_emoji     => (is => 'ro', isa => 'Unicode::Emoji::Base::Char', lazy_build => 1);
-has softbank_emoji => (is => 'ro', isa => 'Unicode::Emoji::Base::Char', lazy_build => 1);
-has google_emoji   => (is => 'ro', isa => 'Unicode::Emoji::Base::Char', lazy_build => 1);
-has unicode_emoji  => (is => 'ro', isa => 'Unicode::Emoji::Base::Char', lazy_build => 1);
+has docomo_emoji   => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
+has kddi_emoji     => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
+has softbank_emoji => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
+has google_emoji   => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
+has unicode_emoji  => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
 
 sub _build_docomo_emoji   { $_[0]->docomo   && Unicode::Emoji::DoCoMo::Emoji->new(unicode_hex => $_[0]->docomo) };
 sub _build_kddi_emoji     { $_[0]->kddi     && Unicode::Emoji::KDDI::Emoji->new(unicode_hex => $_[0]->kddi) };
@@ -93,10 +117,10 @@ sub _build_unicode_emoji  { $_[0]->unicode  && Unicode::Emoji::Unicode::Emoji->n
 
 package Unicode::Emoji::Google::Emoji;
 use Any::Moose;
-extends 'Unicode::Emoji::Base::Char';
+extends 'Unicode::Emoji::Base::Emoji';
 
 package Unicode::Emoji::Unicode::Emoji;
 use Any::Moose;
-extends 'Unicode::Emoji::Base::Char';
+extends 'Unicode::Emoji::Base::Emoji';
 
 __PACKAGE__->meta->make_immutable;

@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Unicode-Emoji-E4U
-version:            0.01
+version:            0.02
 abstract:           ~
 author:  []
 license:            apache
@@ -14,6 +14,7 @@ requires:
     Encode:         0
     Test::Harness:  3.04
     Test::More:     0
+    XML::TreePP:    0.39
 no_index:
     directory:
         - t

@@ -4,11 +4,23 @@ Unicode::Emoji::KDDI - Emoji for au by KDDI
 
 =head1 SYNOPSIS
 
-will be described later.
+    use Unicode::Emoji::E4U;
+    my $e4u = Unicode::Emoji::E4U->new;
+    my $kddi = $e4u->kddi;
 
-=head1 METHODS
+    my $e;
+    $e = $kddi->list->[0];
+    $e = $kddi->find(unicode => 'E488');
+    print "name_ja: ", $e->name_ja, "\n";
+    print "number: ",  $e->number, "\n";
+    print "unicode: ", $e->unicode, "\n";
 
-will be described later.
+    my $ke = $e->kddi_emoji;
+    print "is_alt: ",         $ke->is_alt, "\n";
+    print "unicode_string: ", $ke->unicode_string, "\n";
+    print "unicode_octets: ", $ke->unicode_octets, "\n";
+    print "cp932_string: ",   $ke->cp932_string, "\n";
+    print "cp932_octets: ",   $ke->cp932_octets, "\n";
 
 =head1 DEFINITION
 
@@ -31,11 +43,12 @@ Copyright 2009 Yusuke Kawasaki, all rights reserved.
 package Unicode::Emoji::KDDI;
 use Unicode::Emoji::Base;
 use Any::Moose;
-extends 'Unicode::Emoji::Base::Carrier';
+extends 'Unicode::Emoji::Base::File::Carrier';
+has dataxml => (is => 'rw', isa => 'Str', lazy_build => 1);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
-sub xmlfile { 'kddi/carrier_data.xml'; }
+sub _dataxml { 'kddi/carrier_data.xml'; }
 
 package Unicode::Emoji::KDDI::XML::carrier_data;
 use Any::Moose;
@@ -46,13 +59,13 @@ use Any::Moose;
 has name_ja => (is => 'ro', isa => 'Str');
 has number  => (is => 'ro', isa => 'Str');
 has unicode => (is => 'ro', isa => 'Str');
-has kddi_emoji   => (is => 'ro', isa => 'Unicode::Emoji::Base::Char', lazy_build => 1);
+has kddi_emoji   => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
 
 sub _build_kddi_emoji { Unicode::Emoji::KDDI::Emoji->new(unicode_hex => $_[0]->unicode) };
 
 package Unicode::Emoji::KDDI::Emoji;
 use Any::Moose;
-extends 'Unicode::Emoji::Base::Char::CP932';
+extends 'Unicode::Emoji::Base::Emoji::CP932';
 
 sub _unicode_to_cp932 {
     my $self = shift;

@@ -11,6 +11,7 @@ my $opt = {
         'Test::Harness'     =>  '3.04',
         'Encode'            =>  '0',
         'Any::Moose'        =>  '0',
+        'XML::TreePP'       =>  '0.39',
     },
 };
 
