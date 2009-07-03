@@ -44,9 +44,8 @@ package Unicode::Emoji::SoftBank;
 use Unicode::Emoji::Base;
 use Any::Moose;
 extends 'Unicode::Emoji::Base::File::Carrier';
-has dataxml => (is => 'rw', isa => 'Str', lazy_build => 1);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub _dataxml { 'softbank/carrier_data.xml'; }
 

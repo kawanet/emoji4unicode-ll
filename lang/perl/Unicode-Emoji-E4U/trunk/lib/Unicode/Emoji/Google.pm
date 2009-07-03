@@ -56,9 +56,8 @@ use Unicode::Emoji::Base;
 use Any::Moose;
 extends 'Unicode::Emoji::Base::File';
 has list => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
-has dataxml => (is => 'rw', isa => 'Str', lazy_build => 1);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub _dataxml { 'emoji4unicode.xml'; }
 
@@ -108,12 +107,20 @@ has kddi_emoji     => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_bu
 has softbank_emoji => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
 has google_emoji   => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
 has unicode_emoji  => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
+has kddiweb_emoji  => (is => 'ro', isa => 'Unicode::Emoji::Base::Emoji', lazy_build => 1);
 
 sub _build_docomo_emoji   { $_[0]->docomo   && Unicode::Emoji::DoCoMo::Emoji->new(unicode_hex => $_[0]->docomo) };
 sub _build_kddi_emoji     { $_[0]->kddi     && Unicode::Emoji::KDDI::Emoji->new(unicode_hex => $_[0]->kddi) };
 sub _build_softbank_emoji { $_[0]->softbank && Unicode::Emoji::SoftBank::Emoji->new(unicode_hex => $_[0]->softbank) };
 sub _build_google_emoji   { $_[0]->google   && Unicode::Emoji::Google::Emoji->new(unicode_hex => $_[0]->google) };
 sub _build_unicode_emoji  { $_[0]->unicode  && Unicode::Emoji::Unicode::Emoji->new(unicode_hex => $_[0]->unicode) };
+
+sub _build_kddiweb_emoji {
+    my $self  = shift;
+    return unless $self->kddi;
+    my $cp932 = unpack n => $self->kddi_emoji->cp932_octets;
+    Unicode::Emoji::KDDIweb::Emoji->fromCP932($cp932);
+}
 
 package Unicode::Emoji::Google::Emoji;
 use Any::Moose;

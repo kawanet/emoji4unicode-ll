@@ -17,6 +17,8 @@ SYNOPSIS
         my $softbank = $e4u->softbank;  # Unicode::Emoji::SoftBank instance
         my $google   = $e4u->google;    # Unicode::Emoji::Google instance
 
+        my $kddiweb  = $e4u->kddiweb;   # alias to $e4u->kddi
+
 DESCRIPTION
     This module provides emoji picture characters cross-mapping table base
     on emoji4unicode, Emoji for Unicode, project on Google Code:
@@ -50,6 +52,9 @@ DESCRIPTION
 
   google
     This returns Unicode::Emoji::Google instance.
+
+  kddiweb
+    This returns Unicode::Emoji::KDDI instance as an alias for "kddi".
 
 LINKS
     *   Subversion Trunk
