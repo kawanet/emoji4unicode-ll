@@ -28,7 +28,7 @@ has verbose => (is => 'rw', isa => 'Bool');
 has datadir => (is => 'rw', isa => 'Str', lazy_build => 1);
 has treepp  => (is => 'rw', isa => 'XML::TreePP', lazy_build => 1);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 our $DATADIR = 'http://emoji4unicode.googlecode.com/svn/trunk/data/';
 # our $DATADIR = 'data/';

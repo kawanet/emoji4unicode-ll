@@ -19,6 +19,8 @@ Unicode::Emoji::E4U - Emoji mappings based on emoji4unicode project
     my $softbank = $e4u->softbank;  # Unicode::Emoji::SoftBank instance
     my $google   = $e4u->google;    # Unicode::Emoji::Google instance
 
+    my $kddiweb  = $e4u->kddiweb;   # alias to $e4u->kddi
+
 =head1 DESCRIPTION
 
 This module provides emoji picture characters cross-mapping table
@@ -58,6 +60,10 @@ This returns L<Unicode::Emoji::SoftBank> instance.
 =head2 google
 
 This returns L<Unicode::Emoji::Google> instance.
+
+=head2 kddiweb
+
+This returns L<Unicode::Emoji::KDDI> instance as an alias for C<kddi>.
 
 =head1 LINKS
 
@@ -113,9 +119,10 @@ extends 'Unicode::Emoji::Base';
 has google   => (is => 'rw', isa => 'Unicode::Emoji::Google',   lazy_build => 1);
 has docomo   => (is => 'rw', isa => 'Unicode::Emoji::DoCoMo',   lazy_build => 1);
 has kddi     => (is => 'rw', isa => 'Unicode::Emoji::KDDI',     lazy_build => 1);
+has kddiweb  => (is => 'rw', isa => 'Unicode::Emoji::KDDI',     lazy_build => 1);
 has softbank => (is => 'rw', isa => 'Unicode::Emoji::SoftBank', lazy_build => 1);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub _build_google {
     my $self = shift;
@@ -130,6 +137,10 @@ sub _build_docomo {
 sub _build_kddi {
     my $self = shift;
     Unicode::Emoji::KDDI->new($self->clone_config);
+}
+
+sub _build_kddiweb {
+    $_[0]->kddi;        # alias
 }
 
 sub _build_softbank {
