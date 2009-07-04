@@ -69,12 +69,7 @@ has kddi_emoji    => (is => 'ro', isa => 'Unicode::Emoji::KDDI::Emoji', lazy_bui
 has kddiweb_emoji => (is => 'ro', isa => 'Unicode::Emoji::KDDIweb::Emoji', lazy_build => 1);
 
 sub _build_kddi_emoji { Unicode::Emoji::KDDI::Emoji->new(unicode_hex => $_[0]->unicode) };
-
-sub _build_kddiweb_emoji {
-    my $self  = shift;
-    my $cp932 = unpack n => $self->kddi_emoji->cp932_octets;
-    Unicode::Emoji::KDDIweb::Emoji->fromCP932($cp932);
-}
+sub _build_kddiweb_emoji { Unicode::Emoji::KDDIweb::Emoji->fromKDDI($_[0]->kddi_emoji) };
 
 package Unicode::Emoji::KDDI::Emoji;
 use Any::Moose;
@@ -123,12 +118,12 @@ use Carp;
 use Any::Moose;
 extends 'Unicode::Emoji::Base::Emoji::CP932';
 
-# see http://subtech.g.hatena.ne.jp/miyagawa/20071112/1194865208
-
-sub fromCP932 {
+sub fromKDDI {
     my $class = shift;
-    my $cp932 = shift;
-    my $hex   = sprintf '%04X' => $cp932 - 1792;
+    my $kddi  = shift;
+#   my $hex = sprintf('%04X' => unpack(n => $kddi->cp932_octets) - 1792);
+    my $hex = join '+' => map {sprintf '%04X' => $_-1792} unpack 'n*' => $kddi->cp932_octets;
+    $hex = '>'.$hex if $kddi->is_alt;
     $class->new(unicode_hex => $hex);
 };
 
