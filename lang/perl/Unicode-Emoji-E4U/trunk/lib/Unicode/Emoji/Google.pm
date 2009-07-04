@@ -53,6 +53,10 @@ Copyright 2009 Yusuke Kawasaki, all rights reserved.
 
 package Unicode::Emoji::Google;
 use Unicode::Emoji::Base;
+use Unicode::Emoji::DoCoMo;
+use Unicode::Emoji::KDDI;
+use Unicode::Emoji::SoftBank;
+use Unicode::Emoji::Google;
 use Any::Moose;
 extends 'Unicode::Emoji::Base::File';
 has list => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
@@ -114,13 +118,7 @@ sub _build_kddi_emoji     { $_[0]->kddi     && Unicode::Emoji::KDDI::Emoji->new(
 sub _build_softbank_emoji { $_[0]->softbank && Unicode::Emoji::SoftBank::Emoji->new(unicode_hex => $_[0]->softbank) };
 sub _build_google_emoji   { $_[0]->google   && Unicode::Emoji::Google::Emoji->new(unicode_hex => $_[0]->google) };
 sub _build_unicode_emoji  { $_[0]->unicode  && Unicode::Emoji::Unicode::Emoji->new(unicode_hex => $_[0]->unicode) };
-
-sub _build_kddiweb_emoji {
-    my $self  = shift;
-    return unless $self->kddi;
-    my $cp932 = unpack n => $self->kddi_emoji->cp932_octets;
-    Unicode::Emoji::KDDIweb::Emoji->fromCP932($cp932);
-}
+sub _build_kddiweb_emoji  { $_[0]->kddi     && Unicode::Emoji::KDDIweb::Emoji->fromKDDI($_[0]->kddi_emoji) };
 
 package Unicode::Emoji::Google::Emoji;
 use Any::Moose;
