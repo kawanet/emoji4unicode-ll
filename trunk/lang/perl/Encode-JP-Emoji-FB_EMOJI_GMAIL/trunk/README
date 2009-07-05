@@ -7,58 +7,33 @@ SYNOPSIS
         use Encode::JP::Emoji::FB_EMOJI_GMAIL;
 
         # DoCoMo Shift_JIS <SJIS+F89F> octets
+        # <img src="http://mail.google.com/mail/e/docomo_ne_jp/000" class="e" />
         my $sun = "\xF8\x9F";
-        Encode::from_to($sun, 'x-sjis-emoji-docomo', 'x-sjis-emoji-none', FB_DOCOMO_GMAIL());
-
-        # KDDI(app) UTF-8 <U+E598> octets
-        my $fog = "\xEE\x96\x98";
-        Encode::from_to($fog, 'x-utf8-emoji-kddiapp', 'x-utf8-emoji-none', FB_KDDIAPP_GMAIL());
+        Encode::from_to($sun, 'x-sjis-emoji-docomo', 'x-sjis-emoji-none', FB_EMOJI_GMAIL());
 
         # KDDI(web) Shift_JIS <SJIS+F665> octets
+        # <img src="http://mail.google.com/mail/e/ezweb_ne_jp/001" class="e" />
         my $cloud = "\xF6\x65";
-        Encode::from_to($cloud, 'x-sjis-emoji-kddiweb', 'x-sjis-emoji-none', FB_KDDIWEB_GMAIL());
+        Encode::from_to($cloud, 'x-sjis-emoji-kddiweb', 'x-sjis-emoji-none', FB_EMOJI_GMAIL());
 
         # SoftBank UTF-8 <U+E524> string
+        # <img src="http://mail.google.com/mail/e/softbank_ne_jp/1CA" class="e" />
         my $hamster = "\x{E524}";
-        my $softbank = Encode::encode('x-sjis-e4u-none', $hamster, FB_SOFTBANK_GMAIL());
+        $hamster = Encode::encode('x-sjis-e4u-none', $hamster, FB_EMOJI_GMAIL());
 
         # Google UTF-8 <U+FE1C1> octets
+        # <img src="http://mail.google.com/mail/e/1C1" class="e" />
         my $bear = "\xF3\xBE\x87\x81";
-        my $google = Encode::decode('x-utf8-e4u-none', $bear, FB_EMOJI_GMAIL());
+        $bear = Encode::decode('x-utf8-e4u-none', $bear, FB_EMOJI_GMAIL());
 
 DESCRIPTION
-    This module exports the following fallback functions which would be used
-    with "x-sjis-e4u-none" and "x-utf8-e4u-none" encodings which rejects any
+    This module exports the following fallback function. Use this with
+    "x-sjis-e4u-none" and "x-utf8-e4u-none" encodings which rejects any
     emojis. Note that this is NOT an official service powered by Gmail.
 
-  FB_DOCOMO_GMAIL()
-    This returns "img" element for PC to display DoCoMo's emoji images. Note
-    that this works only for DoCoMo's private emoji code points.
-
-  FB_KDDIAPP_GMAIL()
-    This returns "img" element for PC to display KDDI's emoji images. Note
-    that this works only for KDDI's private emoji code points.
-
-  FB_KDDIWEB_GMAIL()
-    This returns "img" element for PC to display KDDI's emoji images. Note
-    that this works only for undocumented version of KDDI's private emoji
-    code points.
-
-  FB_SOFTBANK_GMAIL()
-    This returns "img" element for PC to display SoftBank's emoji images.
-    Note that this works only for SoftBank's private emoji code points.
-
-  FB_GOOGLE_GMAIL()
-    This returns "img" element for PC to display Google's emoji images. Note
-    that this works only for Google's private emoji code points.
-
-  FB_UNICODE_GMAIL()
-    This returns "img" element for PC to display emoji images. Note that
-    this works only for emojis of standard code points.
-
   FB_EMOJI_GMAIL()
-    This accepts all emoji code points above for ease of use. Note that
-    SoftBank is prior to KDDIapp in their conflicts code points.
+    This returns "img" element for PC to display emoji images. Having
+    conflicts with SoftBank encoding, KDDI(app) encoding is NOT recommended.
 
 LINKS
     *   Subversion Trunk
@@ -74,7 +49,7 @@ LINKS
 
         <http://groups.google.com/group/emoji4unicode-ll>
 
-    *   RT: CPAN's request tracker
+    *   RT: CPAN request tracker
 
         <http://rt.cpan.org/NoAuth/Bugs.html?Dist=Encode-JP-Emoji-FB_EMOJI_G
         MAIL>
@@ -86,6 +61,11 @@ LINKS
     *   Search CPAN
 
         <http://search.cpan.org/dist/Encode-JP-Emoji-FB_EMOJI_GMAIL/>
+
+BUGS
+    "Encode.pm" 2.22 and less would face a problem on fallback function. Use
+    latest version of "Encode.pm", or use with "EncodeUpdate.pm" in "t" test
+    directory of the package.
 
 AUTHOR
     Yusuke Kawasaki, <http://www.kawa.net/>
