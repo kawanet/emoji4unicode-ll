@@ -113,7 +113,7 @@ use Encode::JP::Emoji;
 use Encode::JP::Emoji::Property;
 use Encode::JP::Emoji::FB_EMOJI_TEXT;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 our @EXPORT = qw(
     FB_EMOJI_TYPECAST
@@ -126,7 +126,7 @@ sub loaded_path {
 }
 
 our $IMAGE_BASE  = 'http://typecastmobile.googlecode.com/svn/trunk/static/images/emoticons/';
-our $HTML_FORMAT = '<img src="%s%s.gif" class="e" />';
+our $HTML_FORMAT = '<img src="%s%s.gif" alt="%s" class="e" />';
 
 my $DATA_FILE = 'Encode/JP/Emoji/FB_EMOJI_TYPECAST/Emoticon.pl';
 my $DATA_CACHE;
@@ -135,34 +135,40 @@ sub data {
     $DATA_CACHE = do $DATA_FILE;
 }
 
-my $latin1 = Encode::find_encoding('latin1');
+my $ascii  = Encode::find_encoding('us-ascii');
 my $utf8   = Encode::find_encoding('utf8');
 my $docomo = Encode::find_encoding('x-utf8-e4u-docomo');
 my $mixed  = Encode::find_encoding('x-utf8-e4u-mixed');
-my $check  = FB_EMOJI_TEXT();
+my $none   = Encode::find_encoding('x-utf8-e4u-none');
+my $fbtext = FB_EMOJI_TEXT();
 
 sub FB_EMOJI_TYPECAST {
-    my $fb = shift || $check;
+    my $fb = shift || $fbtext;
     sub {
         my $code = shift;
-        my $chr  = chr $code;
+        my $chr  = chr $code;                           # Native UTF-8 string
+        my $dcode;
         if ($chr =~ /\p{InEmojiDoCoMo}/) {
             # docomo emoji
+            $dcode = $code;
         } elsif ($chr =~ /\p{InEmojiAny}/) {
             # others emoji to docomo emoji
-            my $oct = $utf8->encode($chr, $fb);  # Mixed UTF-8 octets
-            my $str = $mixed->decode($oct, $fb); # Google UTF-8 string
-            $oct = $docomo->encode($str, $fb);   # DoCoMo UTF-8 octets
-            $str = $utf8->decode($oct, $fb);     # DoCoMo UTF-8 string
-            $code = ord $str if (1 == length $str);
+            my $moct = $utf8->encode(chr $code, $fb);   # Native UTF-8 octets
+            my $gstr = $mixed->decode($moct, $fb);      # Google UTF-8 string
+            my $doct = $docomo->encode($gstr, $fb);     # DoCoMo UTF-8 octets
+            my $dstr = $utf8->decode($doct, $fb);       # DoCoMo UTF-8 string
+            $dcode = ord $dstr if (1 == length $dstr);
         }
         my $data = data();
-        my $hex  = sprintf '%04X' => $code;
+        my $hex  = sprintf '%04X' => $dcode;
         unless (exists $data->{docomo}->{$hex}) {
-            return $latin1->encode($chr, $fb);
+            my $aoct = $ascii->encode(chr $code, $fb);  # force fallback
+            return $utf8->decode($aoct, $fb);           # UTF-8 string
         }
-        my $name = $data->{docomo}->{$hex};
-        sprintf $HTML_FORMAT => $IMAGE_BASE, $name;
+        my $file = $data->{docomo}->{$hex};
+        my $name = $none->encode(chr $code, $fbtext);   # emoji name
+        $name = $utf8->decode($name, $fb);              # UTF-8 string
+        sprintf $HTML_FORMAT => $IMAGE_BASE, $file, $name;
     };
 }
 
