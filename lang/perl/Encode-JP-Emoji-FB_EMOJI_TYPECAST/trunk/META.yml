@@ -3,7 +3,7 @@ name:               Encode-JP-Emoji-FB_EMOJI_TYPECAST
 version:            0.04
 abstract:           ~
 author:  []
-license:            apache
+license:            gpl
 distribution_type:  module
 configure_requires:
     ExtUtils::MakeMaker:  0

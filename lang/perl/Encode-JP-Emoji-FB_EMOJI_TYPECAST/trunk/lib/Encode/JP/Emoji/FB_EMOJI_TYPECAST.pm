@@ -41,17 +41,23 @@ which rejects any emojis.
 
 =head2 FB_EMOJI_TYPECAST()
 
-This returns an C<img> element for PC to display emoji images.
+This function returns an C<img> element for PC to display emoji images.
 Having conflicts with SoftBank encoding, KDDI(app) encoding is B<NOT> recommended.
 
 =head2 $Encode::JP::Emoji::FB_EMOJI_TYPECAST::IMAGE_BASE
 
-This variable is to set base URL to image files provided by TypeCast.
-Download their zip archive from L<http://start.typepad.jp/typecast/>.
+This variable sets base URL to TypeCast emoji files.
+Download their C<emoticons.zip> archive package from
+L<http://start.typepad.jp/typecast/>.
 
 Image files on Google Code Project Hosting,
 L<http://typecastmobile.googlecode.com/svn/trunk/static/images/emoticons/>,
-is used by default.
+is directly used by default.
+
+TypeCast Emoji Icon Images by Six Apart Ltd is licensed
+under a Creative Commons Attribution 2.1 Japan License.
+Permissions beyond the scope of this license may be available at
+L<http://start.typepad.jp/typecast/>.
 
 =head1 LINKS
 

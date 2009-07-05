@@ -5,7 +5,7 @@ use ExtUtils::MakeMaker;
 my $opt = {
     NAME                =>  'Encode::JP::Emoji::FB_EMOJI_TYPECAST',
     VERSION_FROM        =>  'lib/Encode/JP/Emoji/FB_EMOJI_TYPECAST.pm',
-    LICENSE             =>  'apache',
+    LICENSE             =>  'gpl',
     PREREQ_PM           =>  {
         'Test::More'        =>  '0',
         'Test::Harness'     =>  '3.04',
