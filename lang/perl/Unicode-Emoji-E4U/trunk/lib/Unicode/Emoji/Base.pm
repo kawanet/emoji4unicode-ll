@@ -28,7 +28,7 @@ has verbose => (is => 'rw', isa => 'Bool');
 has datadir => (is => 'rw', isa => 'Str', lazy_build => 1);
 has treepp  => (is => 'rw', isa => 'XML::TreePP', lazy_build => 1);
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 our $DATADIR = 'http://emoji4unicode.googlecode.com/svn/trunk/data/';
 # our $DATADIR = 'data/';
@@ -110,6 +110,8 @@ sub index {
     my $list = $self->list;
     my @notnull = grep {ref $_} @$list;
     Carp::croak "Null list\n" unless scalar @notnull;
+
+    Carp::croak "Invalid index key: $key" unless $notnull[0]->can($key);
 
     my @translate = grep {defined $_->$key()} @notnull;
     Carp::croak "Invalid index key: $key" unless scalar @translate;
