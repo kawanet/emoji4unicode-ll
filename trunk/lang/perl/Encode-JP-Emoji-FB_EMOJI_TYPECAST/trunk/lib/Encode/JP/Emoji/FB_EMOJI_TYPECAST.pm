@@ -145,9 +145,9 @@ my $fbtext = FB_EMOJI_TEXT();
 sub FB_EMOJI_TYPECAST {
     my $fb = shift || $fbtext;
     sub {
-        my $code = shift;
-        my $chr  = chr $code;                           # Native UTF-8 string
-        my $dcode;
+        my $code  = shift;
+        my $chr   = chr $code;                          # Native UTF-8 string
+        my $dcode = 0;
         if ($chr =~ /\p{InEmojiDoCoMo}/) {
             # docomo emoji
             $dcode = $code;
